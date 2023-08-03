@@ -14,19 +14,22 @@ datasets = {
 dataset = st.selectbox("Dataset", datasets.keys())
 measure = st.selectbox("Category", plot.measure_parameters.keys())
 
-# Load DataFrame
-data_frame = pd.read_csv(datasets[dataset]["file"], index_col=0)
+if(measure=="Biological Age" and dataset=="Framingham Heart Study"):
+    st.header("Framington Heart Study does not currently support Biological Age")
+else:
+    # Load DataFrame
+    data_frame = pd.read_csv(datasets[dataset]["file"], index_col=0)
 
-# Update figure based on chosen measure
-survival_df = plot.build_plot(data_frame, plot.measure_parameters[measure])
+    # Update figure based on chosen measure
+    survival_df = plot.build_plot(data_frame, plot.measure_parameters[measure])
 
-# Create and display plot
-fig = px.line(
-    survival_df,
-    x="Time (months)",
-    y="Survival",
-    color="Category",
-    hover_name="Survival",
-    range_y=[0, 1],
-)
-st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+    # Create and display plot
+    fig = px.line(
+        survival_df,
+        x="Time (months)",
+        y="Survival",
+        color="Category",
+        hover_name="Survival",
+        range_y=[0, 1],
+    )
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True)
